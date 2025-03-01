@@ -1,0 +1,10 @@
+services:
+  - type: web
+    name: budget-app
+    env: static
+    buildCommand: ./build.sh
+    staticPublishPath: ./public
+    pullRequestPreviewsEnabled: true
+    envVars:
+      - key: FLUTTER_VERSION
+        value: stable 
