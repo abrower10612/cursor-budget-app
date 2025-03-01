@@ -1,25 +1,23 @@
-#!/usr/bin/env bash
-# exit on error
-set -o errexit
+#!/bin/bash
 
-# Install required dependencies
-apt-get update && apt-get install -y curl git unzip xz-utils zip libglu1-mesa chromium
+# Set Flutter channel and version
+FLUTTER_CHANNEL="stable"
+FLUTTER_VERSION="3.29.0"
 
-# Download Flutter SDK
-git clone https://github.com/flutter/flutter.git
+# Construct the Flutter SDK filename
+FLUTTER_SDK="flutter_linux_${FLUTTER_VERSION}-${FLUTTER_CHANNEL}.tar.xz"
+
+# Download the Flutter SDK
+wget https://storage.googleapis.com/flutter_infra_release/releases/${FLUTTER_CHANNEL}/linux/${FLUTTER_SDK}
+
+# Extract the Flutter SDK
+tar xf ${FLUTTER_SDK}
+
+# Add Flutter to PATH
 export PATH="$PATH:`pwd`/flutter/bin"
 
-# Use Chromium instead of Chrome
-export CHROME_EXECUTABLE=$(which chromium)
+# Verify Flutter installation
+flutter --version
 
-# Install Flutter
-flutter precache
-flutter doctor
-flutter pub get
-
-# Build for web
+# Run Flutter web build
 flutter build web
-
-# Copy the build files to the public directory
-mkdir -p public
-cp -r build/web/* public/ 
